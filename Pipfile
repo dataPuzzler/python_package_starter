@@ -7,6 +7,7 @@ name = "pypi"
 numpy = "*"
 requests = "*"
 twine = "*"
+multilevel-py = "*"
 
 [dev-packages]
 "flake8" = "*"
