@@ -10,7 +10,7 @@ from copy import deepcopy
 
 import pytest
 
-from py_pkg.curves import (SupplyCurve, DemandCurve, Equilibrium,
+from sample_pck.curves import (SupplyCurve, DemandCurve, Equilibrium,
                            SupplyMonotonicityError, DemandMonotonicityError,
                            equil_price, equil_price_ranges, HorizPriceShock,
                            PriceRanges)
