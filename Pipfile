@@ -10,6 +10,7 @@ twine = "*"
 multilevel-py = "*"
 
 [dev-packages]
+sample_pck= {editable = true, path = "."}
 "flake8" = "*"
 pytest = "*"
 ipython = "*"
