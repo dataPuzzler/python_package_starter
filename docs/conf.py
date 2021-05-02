@@ -2,31 +2,31 @@
 #
 # Configuration file for the Sphinx documentation builder.
 #
-# This file does only contain a selection of the most common options. For a
-# full list see the documentation:
-# http://www.sphinx-doc.org/en/master/config
+# This file only contains a selection of the most common options. For a full
+# list see the documentation:
+# https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 # -- Path setup --------------------------------------------------------------
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-import os
+from pathlib import Path
 import sys
-
-sys.path.insert(0, os.path.abspath('../..'))
-from py_pkg.__version__ import __version__
-
+package_path = Path(__file__).parent.parent
+sys.path.insert(0, str(package_path.resolve()))
+print(package_path.resolve())
+print(sys.path)
 
 # -- Project information -----------------------------------------------------
-
-project = 'Python Package Template Project'
-copyright = '2018, Alex Ioannides'
-author = 'Alex Ioannides'
+project = 'Python Package Template Starter'
+copyright = '2021, Lukas Seppelfricke'
+author = 'Lukas Seppelfricke'
 
 # The short X.Y version
+from sample_pck import __version__ 
 version = __version__[:-2]
+
 # The full version, including alpha/beta/rc tags
 release = __version__
 
@@ -44,6 +44,12 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
+
+    'sphinx.ext.napoleon',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.intersphinx',
+
+
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -68,7 +74,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = None
@@ -108,7 +114,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'py_pkg'
+htmlhelp_basename = 'sample_pck'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -136,7 +142,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'pypkg.tex', 'pypkg Documentation',
-     'Alex Ioannides', 'manual'),
+     'Lukas Seppelfricke', 'manual'),
 ]
 
 
@@ -145,7 +151,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'pypkg', 'pypkg Documentation',
+    (master_doc, 'sample_pck', 'sample_pck Documentation',
      [author], 1)
 ]
 
@@ -156,8 +162,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'pypkg', 'pypkg Documentation',
-     author, 'pypkg', 'One line description of project.',
+    (master_doc, 'sampel_pck', 'sample_pck Documentation',
+     author, 'sample_pck', 'One line description of project.',
      'Miscellaneous'),
 ]
 
@@ -181,3 +187,7 @@ epub_exclude_files = ['search.html']
 
 
 # -- Extension configuration -------------------------------------------------
+
+# Napoleon Extension Setting
+# https://sphinxcontrib-napoleon.readthedocs.io/en/latest/sphinxcontrib.napoleon.html#sphinxcontrib.napoleon.Config
+napoleon_include_init_with_doc = True
