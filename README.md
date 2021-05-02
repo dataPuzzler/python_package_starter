@@ -6,10 +6,10 @@ It includes the following features:
 - [Python inside a virtual environment](#virtual-env)
 - [A (sample) python package](#sample-package)
 - [Automatic Loading of Environment Variables](#env-var-loading)
-- documentation generation via Sphinx with auto-doc setup
-- unit-testing with PyTest
-- code linting with flake8
-- static code checking with mypy
+- [Unit-testing via pytest](#unit-testing)
+- Documentation generation via Sphinx with auto-doc setup
+- [Code linting via flake8](#code-linting)
+- [Static Type-checking via mypy](#type-check)
 
 Instructions how to work with each of this components is provided in more detail in the following sections.
 
@@ -50,10 +50,7 @@ pipenv install --dev
 
 This will create a virtual python environment into `<Your_Project_Name>/.venv` and install all project dependencies (incl. dev dependencies) into it.
 
-All of the direct packages dependencies required to run the project's code (e.g. multilevel_py), as well as all the packages used during development (e.g. flake8 for code linting and IPython for interactive console sessions), are described in the `Pipfile`. Their precise downstream dependencies are fixated in `Pipfile.lock`, which is used to guarentee repeatable (i.e. deterministic) builds.
-
-These project dependencies are a superset the package installation dependencies for the package under development, i.e. those that are defined in the `install_requires` section of `setup.py`. 
-
+All of the direct packages dependencies required to run the project's code (e.g. multilevel_py), as well as all the packages used during development (e.g. flake8 for code linting and IPython for interactive console sessions), are described in the `Pipfile`. Their precise downstream dependencies are fixed in `Pipfile.lock`, which is used to guarentee repeatable (i.e. deterministic) builds.
 
 
 ## Application of project and related tools
@@ -76,7 +73,7 @@ Prepending `pipenv` to every command you want to run within the context of your 
 pipenv shell
 ```
 
-Which is equivalent to 'activating' the virtual environment. Any command will now be executed within the virtual environment. That means instead of `pipenv run <ANY_CMD>` it suffices to run <ANY_CMD> inside an active shell session.
+Which is equivalent to 'activating' the virtual environment. Any command will now be executed within the virtual environment. That means instead of `pipenv run <ANY_CMD>` it suffices to run `<ANY_CMD>` inside an active shell session.
 
 Use `exit` to leave the shell session.
 
@@ -114,7 +111,7 @@ console_scripts =
 This enables the declared entry point - `sample_pck.entry_points.main` -  to be invoked when `pipenv run sample_pck` is called from the command line.
 
 
-### Running Unit Tests
+### Running Unit Tests <a name="unit-testing"></a>
 
 All test have been written using the [PyTest](https://docs.pytest.org/en/latest/) package. Tests are kept in the `tests` folder and can be run from the command line by invoking,
 
@@ -135,27 +132,26 @@ tests/
 
 The `conftest.py` module is used by pytest to build testing-utilities used by several testing modules. These are referred to as 'fixtures' in PyTest - more details can be found [here](https://docs.pytest.org/en/latest/fixture.html).
 
-### Linting Code
+### Linting Code <a name="code-linting"></a>
 
-I prefer to use [flake8](http://flake8.pycqa.org/en/latest/) for style guide enforcement. This can be invoked from the command line by running,
+[Flake8](http://flake8.pycqa.org/en/latest/) is used to enforce recommended code style guides. The precise linting rules can be configured in the `[flake8]` section of `setup.cfg`.
 
-```bash
-pipenv run flake8 py_pkg
-```
-
-Flake8 could easily be swapped-out for another tool by using Pipenv as described above.
-
-### Static Type Checking
-
-We have used the Python type annotation framework, together with the [MyPy package](http://mypy-lang.org), to perform static type checks on the codebase. Analogous to any linter or unit testing framework, MyPy can be run from the command line as follows,
+To start code linting, execute the following command:
 
 ```bash
-pipenv run python -m mypy py_pkg/*.py
+pipenv run flake8 src/sample_pck
 ```
 
-MyPy options for this project can be defined in the `mypy.ini` file that MyPy will look for by default. For more information on the full set of options, see the [mypy documentation](https://mypy.readthedocs.io/en/stable/config_file.html).
 
-Examples of type annotation and type checking for library development can be found in the `py_pkg.curves.py` module. This should also be cross-referenced with the improvement to readability (and usability) that this has on package documentation.
+### Static Type Checking <a name="type-check"></a>
+
+The [MyPy package](http://mypy-lang.org) can be used to perform static type checks on your codebase. The tool is configured in the `[mypy]` section of 
+`setup.cfg` and can be executed via the following command.
+
+```bash
+pipenv run python -m mypy
+```
+
 
 ### Documentation
 
