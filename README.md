@@ -1,139 +1,122 @@
-# Python Package Template Project
+# Python Package Starter
 
-[![image](https://img.shields.io/pypi/v/py-package-template.svg)](https://pypi.org/project/py-package-template/)
-[![Build Status](https://travis-ci.org/AlexIoannides/py-package-template.svg?branch=master)](https://travis-ci.org/AlexIoannides/py-package-template)
+The python_package_starter can be used as starting point for the development of a python package, that can be deployed to PyPi or installed locally via pip.
+It includes the following features:
 
-The py-template-project package allows users to download the contents of this [GiHub repository](https://github.com/AlexIoannides/py-package-template),  containing a skeleton Python package project to be used as a template for kick-starting development of **any** type of Package; destined for upload to PyPI, or just for local install using Pip. The downloaded package includes the following components to aid rapid development without having to spend time cloning existing set-ups from other projects:
+- [Python inside a virtual environment](#virtual-env)
+- [A (sample) python package](#sample-package)
+- [Automatic Loading of Environment Variables](#env-var-loading)
+- documentation generation via Sphinx with auto-doc setup
+- unit-testing with PyTest
+- code linting with flake8
+- static code checking with mypy
 
-- a minimal `setup.py` file;
-- testing with PyTest;
-- documentation (HTML and PDF) generated using Sphinx with auto-documentation setup; 
-- an entry-point that allows the package to execute functions directly from the command line - e.g. to start a server, interact with a user, download a GitHub repository, etc.; and,
-- automated testing and deployment using Travis CI.
+Instructions how to work with each of this components is provided in more detail in the following sections.
 
-A description of how to work with (and modify) each of these components, is provided in more detail in the sections that follow-on below, as well as in the documentation and within the example code bundled with the package.
+The project should be understood as **opinionated**. It is primarily based on my own experience in developing python packages.
+Furthermore, I relied on the advice given by the [Python Packaging Authority (PyPA)](https://packaging.python.org/guides/distributing-packages-using-setuptools/) and used the excellent [Flask](https://github.com/pallets/flask) project as primary reference for established 'best practices'. The structure and content of this document was also inspired by [py-package-template](https://github.com/AlexIoannides/py-package-template).
 
-This is obviously a opinionated view of how a Python package project ought to be structured, based largely on my own experiences and requirements. Where I have needed guidance on this subject, I have leant heavily on the advice given by the [Python Packaging Authority (PyPA)](https://packaging.python.org/guides/distributing-packages-using-setuptools/) and used the excellent [Requests](https://github.com/requests/requests) and [Flask](https://github.com/pallets/flask) projects as references for 'best practices'.
 
-## Installing
+## Project Setup
 
-Install and update using [pip](https://pip.pypa.io/en/stable/quickstart/):
+### Prerequisites
+- It is assumed that Python 3.9.x is 'globally' installed on your system and available on your Path.
+- It is assumed that git 2.x.x is installed on your system and available on the your Path.
 
-```bash
-pip3 install py-template-project
-```
 
-## Downloading a Python Package Template Project
-
-To down load the latest version of the Python Package Template project located in [this GiHub repository](https://github.com/AlexIoannides/py-package-template), execute the following command from the command line:
-
-```bash
-py-package-template install
-```
-
-This will be downloaded to the current directory and will contain the following directory structure:
-
-```bash
-py-package-tempate/
- |-- docs/
- |-- |-- build_html/
- |-- |-- build_latex/
- |-- |-- source/
- |-- py-pkg/
- |-- |-- __init__.py
- |-- |-- __version__.py
- |-- |-- curves.py
- |-- |-- entry_points.py
- |-- tests/
- |-- |-- test_data/
- |-- |   |-- supply_demand_data.json
- |-- |   __init__.py
- |-- |   conftest.py
- |-- |   test_curves.py
- |-- .env
- |-- .gitignore
- |-- Pipfile
- |-- Pipfile.lock
- |-- README.md
- |-- setup.py
-```
-
-## The Python Package Template Project
-
-We now describe the various components of the template project and the workflows associated with it. The template package project contains two modules to get things started:
-
-- `curves.py`
-- `entry_points.py`
-
-The `curves.py` module contains sample code for modelling economic supply and demand curves and makes for a useful demonstration of how Python type annotation and interface definition via abstract base classes, can make code easier to read, document and reason about (I am a big fan). The test suite for this module is contained in the `tests` folder and demonstrates how to get up-and-running with PyTest.
-
-The `entry_points.py` module is referenced in the `setup.py` file via the `entry_points` definitions:
-
-```python
-entry_points={
-    'console_scripts': ['py-package-template=py_pkg.entry_points:main'],
-}
-```
-
-It enables the declared entry point - `py_pkg.entry_points.main` -  to be invoked when `py-package-template` is called from the command line. This is what enables the template project to be downloaded programmatically (check the code for the full details). This could easily be extended to start a server (e.g. using Flask), or run any other type of script.
-
-### Project Dependencies
-
-We use [pipenv](https://docs.pipenv.org) for managing project dependencies and Python environments (i.e. virtual environments). These dependencies are **not** to be confused with the package installation dependencies for the package under developement - i.e. those that need to be defined in the `install_requires` section of `setup.py`. All of the direct packages dependencies required to run the project's code (e.g. NumPy for tensors), as well as all the packages used during development (e.g. flake8 for code linting and IPython for interactive console sessions), are described in the `Pipfile`. Their precise downstream dependencies are crystallised in `Pipfile.lock`, which is used to guarentee repeatable (i.e. deterministic) builds.
-
-#### Installing Pipenv
-
-To get started with Pipenv, first of all download it - assuming that there is a 'global' version of Python available on your system and on the PATH, then this can be achieved by running the following command,
+### Installing pipenv globally
+[Pipenv](https://docs.pipenv.org) is used as the tool of choice to manage virtual environments and project package dependencies. You can install 
+it globally on your system with:
 
 ```bash
 pip3 install pipenv
 ```
-
 For more information, including advanced configuration options, see the [official pipenv documentation](https://docs.pipenv.org).
 
-#### Installing this Projects' Dependencies
+### Clone the project  
 
-Make sure that you're in the project's root directory (the same one in which `Pipfile` resides), and then run,
+Clone this repository into a directory of your choice via
+```bash
+git clone https://github.com/dataPuzzler/python_package_starter.git <Your_Project_Name>
+cd <Your_Project_Name>
+```
+
+### Install project dependencies into a virtual environment
+Inside `<Your_Project_Name>`, run the following command:
 
 ```bash
 pipenv install --dev
 ```
 
-This will install all of the direct project dependencies as well as the development dependencies (the latter a consequence of the `--dev` flag). To add and remove dependencies as required for your new project, use `pipenv install` and `pipenv uninstall` as required, using the `--dev` flag for development-only dependencies.
+This will create a virtual python environment into `<Your_Project_Name>/.venv` and install all project dependencies (incl. dev dependencies) into it.
 
-#### Running Python and IPython from the Project's Virtual Environment
+All of the direct packages dependencies required to run the project's code (e.g. multilevel_py), as well as all the packages used during development (e.g. flake8 for code linting and IPython for interactive console sessions), are described in the `Pipfile`. Their precise downstream dependencies are fixated in `Pipfile.lock`, which is used to guarentee repeatable (i.e. deterministic) builds.
 
-In order to open a Python REPL using within an environment that precisely mimics the one the project is being developed with, use Pipenv from the command line as follows,
+These project dependencies are a superset the package installation dependencies for the package under development, i.e. those that are defined in the `install_requires` section of `setup.py`. 
+
+
+
+## Application of project and related tools
+
+### Running Python and IPython from the Project's Virtual Environment<a name="virtual-env"></a>
+
+In order to open a Python REPL using within an environment that precisely mimics projects virtual environment, use Pipenv from the command line as follows,
 
 ```bash
 pipenv run python3
 ```
 
-The `python3` command could just as well be `ipython3`.
+For use of an interactive python session, run the previous command with `ipython3` instead of `python3`.
 
-#### Automatic Loading of Environment Variables
+### Pipenv Shells
 
-Pipenv will automatically pick-up and load any environment variables declared in the `.env` file, located in the package's root directory. For example, adding,
-
-```bash
-SPARK_HOME=applications/spark-2.3.1/bin
-```
-
-Will enable access to this variable within any Python program, via a call to `os.environ['SPARK_HOME']`. Note, that if any security credentials are placed here, then this file **must** be removed from source control - i.e. add `.env` to the `.gitignore` file to prevent potential security risks.
-
-#### Pipenv Shells
-
-Prepending `pipenv` to every command you want to run within the context of your Pipenv-managed virtual environment, can get (very) tedious. This can be avoided by entering into a Pipenv-managed shell,
+Prepending `pipenv` to every command you want to run within the context of your Pipenv-managed virtual environment is tedious. This can be avoided by entering into a Pipenv-managed shell.
 
 ```bash
 pipenv shell
 ```
 
-Which is equivalent to 'activating' the virtual environment. Any command will now be executed within the virtual environment. Use `exit` to leave the shell session.
+Which is equivalent to 'activating' the virtual environment. Any command will now be executed within the virtual environment. That means instead of `pipenv run <ANY_CMD>` it suffices to run <ANY_CMD> inside an active shell session.
+
+Use `exit` to leave the shell session.
+
+
+
+### Automatic Loading of Environment Variables <a name="env-var-loading"></a>
+
+Pipenv will automatically pick-up and load any environment variables declared in the `.env` file, located in the package's root directory. For example, adding,
+
+```bash
+PCK_ENV=prd
+```
+
+Will enable access to this variable within any Python program, via a call to `os.environ['PCK_ENV']`. 
+
+
+
+### A (sample) python package <a name="sample-package"></a>
+
+The sample python package shipped with this boilerplate is located in the `src` directory consists of the two main files:
+
+- `animals.py`
+- `entry_points.py`
+
+The code in `animals.py` depends on [multilevel_py](https://github.com/dataPuzzler/multilevel_py) and illustrates its core features by constructing a 
+simple classification hierarchy, resulting in a description of the well known cartoon characters tom and jerry.
+This code depicts an example of a simple python package and is meant to be replaced by the code of the python package to be developed.
+
+Entry points enable that the invocation of certain package functions from the command line. For example, the `entry_points.py` module is referenced in the `setup.cfg` file in the `options.entry_points` section:
+
+```python
+console_scripts =
+    sample_pck = sample_pck.entry_points:main
+```
+This enables the declared entry point - `sample_pck.entry_points.main` -  to be invoked when `pipenv run sample_pck` is called from the command line.
+
 
 ### Running Unit Tests
 
-All test have been written using the [PyTest](https://docs.pytest.org/en/latest/) package. Tests are kept in the `tests` folder and can be run from the command line by - e.g. by invoking,
+All test have been written using the [PyTest](https://docs.pytest.org/en/latest/) package. Tests are kept in the `tests` folder and can be run from the command line by invoking,
 
 ```bash
 pipenv run pytest
@@ -144,13 +127,13 @@ The test suite is structured as an independent Python package as follows:
 ```bash
 tests/
  |-- test_data/
- |   |-- supply_demand_data.json
+ |   |-- your-test-data.json
  |   __init__.py
  |   conftest.py
- |   test_curves.py
+ |   test_animals.py
 ```
 
-The `conftest.py` module is used by PyTest - in this particular instance for loading test data and building objects that will then be used by potentially many other tests. These are referred to as 'fixtures' in PyTest - more details can be found [here](https://docs.pytest.org/en/latest/fixture.html).
+The `conftest.py` module is used by pytest to build testing-utilities used by several testing modules. These are referred to as 'fixtures' in PyTest - more details can be found [here](https://docs.pytest.org/en/latest/fixture.html).
 
 ### Linting Code
 
@@ -176,13 +159,8 @@ Examples of type annotation and type checking for library development can be fou
 
 ### Documentation
 
-The documentation in the `docs` folder has been built using [Sphinx](http://www.sphinx-doc.org). We have used the default 'quickstart' automatic configuration, which was originally triggered by executing,
-
-```bash
-pipenv run sphinx-quickstart
-```
-
-The output is based primarily on the Docstrings in the source code, using the `autodoc` extension within Sphinx (specified during the 'quickstart'). The contents for the entry point into the docs (`index.html`), is defined in the `index.rst` file, which itself imports the `modules.rst` file that lists all of the modules to document. The documentation can be built by running the following command,
+The documentation in the `docs` folder has been built using [Sphinx](http://www.sphinx-doc.org). Sqhinx default 'quickstart' was run to create the `conf.py`, which was customized.
+The output is based primarily on the Docstrings in the source code, using the `autodoc` extension within Sphinx (specified during the 'quickstart'). The contents for the entry point into the docs (`index.html`), is defined in the `index.rst` file, which itself imports the `modules.rst` file that lists all of the package modules to document. The documentation can be built by running the following command,
 
 ```bash
 pipenv run sphinx-build -b html docs/source docs/build_html
@@ -200,16 +178,16 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 #### Creating a PDF Version Using LaTeX
 
-So long as a LaTex distribution is present on your system (e.g. MikTeX for Mac OS X), then it is possible to create a PDF version of the documentation, as well. Start by building the prerequisite LaTex version from the ReStructured Text originals,
+If a LaTex distribution is present on your system, then it is possible to create a PDF version of the documentation, as well. Start by building the prerequisite LaTex version from the ReStructured Text originals,
 
 ```bash
 pipenv run sphinx-build -b latex docs/source docs/build_latex
 ```
 
-Then, navigate to `docs/build_latex` and run,
+Then, navigate to `docs/` and run,
 
 ```bash
-make
+make latexpdf
 ```
 
 Both LaTeX and PDF versions can then be found in `docs/build_latex`.
@@ -268,3 +246,5 @@ Briefly, this instructs the Travis build server to:
     - push it to PyPI.org using my PyPI account credentials.
 
 Note that we provide Travis with an encrypted password, that was made using the Travis command line tool (downloaded using HomeBrew on OS X). For more details on this and PyPI deployment more generally see the [Travis CI documentation](https://docs.travis-ci.com/user/deployment/pypi/#stq=&stp=0).
+
+
