@@ -13,6 +13,8 @@ docs/build_*
 # misc
 .DS_Store
 
+# pyenv
+.python-version
 
 # Sphin-docs
 docs/_build/
