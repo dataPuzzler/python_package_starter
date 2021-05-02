@@ -2,8 +2,6 @@
 .vscode/
 
 # python
-venv/
-virtualenv/
 __pycache__/
 .pytest_cache/
 .mypy_cache/
