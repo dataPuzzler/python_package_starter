@@ -19,7 +19,7 @@ Furthermore, I relied on the advice given by the [Python Packaging Authority (Py
 
 ## Project Setup
 
-### Prerequisites
+### Prerequisites <a name="prereq"></a>
 - It is assumed that Python 3.9.x is 'globally' installed on your system and available on your Path.
 - It is assumed that git 2.x.x is installed on your system and available on the your Path.
 
@@ -155,11 +155,11 @@ pipenv run python -m mypy
 
 ### Code Documentation <a name="code docu">
 
-The documentation is located `docs` folder and has been built using [Sphinx](http://www.sphinx-doc.org). Sqhinx default 'quickstart' was run to create the initial `conf.py`, which was customized as follows:
+The documentation is located `docs` folder and has been built using [Sphinx](http://www.sphinx-doc.org). Sqhinx's default 'quickstart' was run in order to create the initial `conf.py`. It was customized concerning the docstring format and the documentation theme as explained below.
 
 
 #### Usage of Google-style docstrings
-To support Docstrings according to the [Google Styleguid](https://google.github.io/styleguide/pyguide.html), the `sphinx.ext.napoleon` shipped by Sphinx us used.
+To support Docstrings according to the [Google Styleguid](https://google.github.io/styleguide/pyguide.html), the `sphinx.ext.napoleon` shipped by Sphinx is used.
 
 
 #### Usage of Read the Docs Documentation Theme
@@ -171,7 +171,8 @@ html_theme = "sphinx_rtd_theme"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 ```
 
-#### Creating HTML Version
+
+#### Creating a HTML Version
 
 From the repository directory:
 
@@ -193,29 +194,24 @@ The resulting HTML documentation can be accessed by opening `docs/_built/html/in
 #### Creating a PDF Version Using LaTeX
 
 If a LaTex distribution is present on your system, it is possible to create a PDF version of the documentation as well. 
-From the repository directory:
-
-```bash
-pipenv run sphinx-build -b latexpdf  docs/ docs/_build/latex
-```
-
-Alternatively, navigate to `docs/` and run,
+Navigate to `docs/` and run,
 
 ```bash
 make latexpdf
 ```
 
-Both LaTeX and PDF versions can then be found in `docs/build_latex`.
+Both LaTeX and PDF versions can then be found in `docs/_build/latex`.
+
 
 ### Building Deployable Distributions
 
-The recommended (and most pragmatic) way of deploy this package is to build a Python [wheel](https://wheel.readthedocs.io/en/stable/) and to then to install it in a fresh virtual environment on the target system. The exact build configuration is determined by the parameters in `setup.py`. Note, that this requires that all package dependencies also be specified in the `install_requires` declaration in `setup.py`, **regardless** of their entry in `Pipfile`. For more information on Python packaging refer to the [Python Packaging User Guide](https://packaging.python.org) and the accompanying [sample project](https://github.com/pypa/sampleproject). To create the Python wheel run,
+The recommended approach to deploy this package is to build a Python [wheel](https://wheel.readthedocs.io/en/stable/) and to then to install it in a fresh virtual environment on the target system. The exact build configuration is determined by the parameters in `setup.py`. Note, that this requires that all package dependencies are also specified in the `install_requires` declaration in `setup.py`, **regardless** of their entry in `Pipfile`. For more information on Python packaging refer to the [Python Packaging User Guide](https://packaging.python.org) and the accompanying [sample project](https://github.com/pypa/sampleproject). To create the Python wheel run,
 
 ```bash
 pipenv run python setup.py bdist_wheel
 ```
 
-This will create `build`, `py_package_template.egg-info` and `dist` directories - the wheel can be found in the latter. This needs to be copied to the target system (which we are assuming has Python and Pipenv available as a minimum), where it can be installed into a new virtual environment, together with all downstream dependencies, using,
+This will create `build` and `dist` directories - the wheel can be found in the latter. This needs to be copied to the target system (which is assumed to fulfill the requirements as defined in ['Prerequisites']('#prereq')). There it can be installed into a new virtual environment, together with all downstream dependencies, by running
 
 ```bash
 pipenv install path/to/your-package.whl
