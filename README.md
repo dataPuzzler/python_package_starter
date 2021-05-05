@@ -1,3 +1,4 @@
+[![Run unittests](https://github.com/dataPuzzler/python_package_starter/actions/workflows/unit-tests.yml/badge.svg?branch=master&event=push)](https://github.com/dataPuzzler/python_package_starter/actions/workflows/unit-tests.yml)
 # Python Package Starter
 
 The python_package_starter can be used as starting point for the development of a python package, that can be deployed to PyPi or installed locally via pip.
