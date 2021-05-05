@@ -1,7 +1,7 @@
 
 name: Run unittests
-on: [push]
-branches:
+  push: 
+    branches:
       - master
 
 jobs:
