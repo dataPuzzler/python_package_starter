@@ -7,9 +7,11 @@ It includes the following features:
 - [A (sample) python package](#sample-package)
 - [Automatic Loading of Environment Variables](#env-var-loading)
 - [Unit-testing via pytest](#unit-testing)
-- [Documentation generation via Sphinx with auto-doc setup](#code-docu)
+- [Automated Testing via Github Workflows](#ci)
 - [Code linting via flake8](#code-linting)
 - [Static Type-checking via mypy](#type-check)
+- [Documentation generation via Sphinx with auto-doc setup](#code-docu)
+
 
 Instructions how to work with each of this components is provided in more detail in the following sections.
 
@@ -132,6 +134,12 @@ tests/
 
 The `conftest.py` module is used by pytest to build testing-utilities used by several testing modules. These are referred to as 'fixtures' in PyTest - more details can be found [here](https://docs.pytest.org/en/latest/fixture.html).
 
+### Automated Testing using Github workflows <a name="ci"></a>
+This package starter also defines a Continous Integration workflow that resides in the `.github/workflows/unit-tests.yml` directory.
+This workflow runs all unit-tests via `pytest` on each push to the master branch. 
+If you don't use Githubs CI Pipelines should delete the `.github` directory and its subdirectories. 
+
+
 ### Linting Code <a name="code-linting"></a>
 
 [Flake8](http://flake8.pycqa.org/en/latest/) is used to enforce recommended code style guides. The precise linting rules can be configured in the `[flake8]` section of `setup.cfg`.
@@ -203,9 +211,9 @@ make latexpdf
 Both LaTeX and PDF versions can then be found in `docs/_build/latex`.
 
 
-### Building Deployable Distributions
+### Building a deployable Package Distribution
 
-The recommended approach to deploy this package is to build a Python [wheel](https://wheel.readthedocs.io/en/stable/) and to then to install it in a fresh virtual environment on the target system. The exact build configuration is determined by the parameters in `setup.py`. Note, that this requires that all package dependencies are also specified in the `install_requires` declaration in `setup.py`, **regardless** of their entry in `Pipfile`. For more information on Python packaging refer to the [Python Packaging User Guide](https://packaging.python.org) and the accompanying [sample project](https://github.com/pypa/sampleproject). To create the Python wheel run,
+The recommended approach to deploy this package is to build a Python [wheel](https://wheel.readthedocs.io/en/stable/) and to install it in a fresh virtual environment on the target system. The exact build configuration is determined by the provided metadata in `setup.py` and `setup.cfg`. Note, that this requires that all package dependencies are also specified in the `install_requires` declaration in `setup.py`, **regardless** of their entry in `Pipfile`. For more information on Python packaging refer to the [Python Packaging User Guide](https://packaging.python.org) and the accompanying [sample project](https://github.com/pypa/sampleproject). To create the Python wheel run,
 
 ```bash
 pipenv run python setup.py bdist_wheel
@@ -216,46 +224,3 @@ This will create `build` and `dist` directories - the wheel can be found in the 
 ```bash
 pipenv install path/to/your-package.whl
 ```
-
-### Automated Testing and Deployment using Travis CI
-
-We have chosen Travis for Continuous Integration (CI) as it integrates very easily with Python and GitHub (where I have granted it access to my public repositories). The configuration details are kept in the `.travis.yaml` file in the root directory:
-
-```yaml
-ncsudo: required
-
-language: python
-
-python:
-  - 3.7-dev
-
-install:
-  - pip install pipenv
-  - pipenv install --dev
-
-script:
-  - pipenv run pytest
-
-deploy:
-  provider: pypi
-  user: alexioannides
-  password:
-    secure: my-encrypted-pypi-password
-  on:
-    tags: true
-  distributions: bdist_wheel
-```
-
-Briefly, this instructs the Travis build server to:
-
-1. download, build and install Python 3.7;
-2. install Pipenv
-3. use Pipenv and `Pipfile.lock` to install **all** dependencies (dev dependencies are necessary for running PyTest);
-4. run all unit tests using PyTest;
-5. if the tests were run successfully and if we have pushed a new tag (i.e. a release) to the master branch then:
-    - build a Python wheel; and,
-    - push it to PyPI.org using my PyPI account credentials.
-
-Note that we provide Travis with an encrypted password, that was made using the Travis command line tool (downloaded using HomeBrew on OS X). For more details on this and PyPI deployment more generally see the [Travis CI documentation](https://docs.travis-ci.com/user/deployment/pypi/#stq=&stp=0).
-
-
