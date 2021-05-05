@@ -7,7 +7,7 @@ It includes the following features:
 - [A (sample) python package](#sample-package)
 - [Automatic Loading of Environment Variables](#env-var-loading)
 - [Unit-testing via pytest](#unit-testing)
-- Documentation generation via Sphinx with auto-doc setup
+- [Documentation generation via Sphinx with auto-doc setup](#code-docu)
 - [Code linting via flake8](#code-linting)
 - [Static Type-checking via mypy](#type-check)
 
@@ -153,18 +153,17 @@ pipenv run python -m mypy
 ```
 
 
-### Documentation
+### Code Documentation <a name="code docu">
 
-The documentation in the `docs` folder has been built using [Sphinx](http://www.sphinx-doc.org). Sqhinx default 'quickstart' was run to create the `conf.py`, which was customized.
-The output is based primarily on the Docstrings in the source code, using the `autodoc` extension within Sphinx (specified during the 'quickstart'). The contents for the entry point into the docs (`index.html`), is defined in the `index.rst` file, which itself imports the `modules.rst` file that lists all of the package modules to document. The documentation can be built by running the following command,
+The documentation is located `docs` folder and has been built using [Sphinx](http://www.sphinx-doc.org). Sqhinx default 'quickstart' was run to create the initial `conf.py`, which was customized as follows:
 
-```bash
-pipenv run sphinx-build -b html docs/source docs/build_html
-```
 
-The resulting HTML documentation can be accessed by opening `docs/build_html/index.html` in a web browser.
+#### Usage of Google-style docstrings
+To support Docstrings according to the [Google Styleguid](https://google.github.io/styleguide/pyguide.html), the `sphinx.ext.napoleon` shipped by Sphinx us used.
 
-My preferred third party theme from [Read the Docs](https://readthedocs.org) has also been used, by installing the `sphinx_rtd_theme` as a development dependency and modifying `docs/source/config.py` as follows:
+
+#### Usage of Read the Docs Documentation Theme
+The third party theme from [Read the Docs](https://readthedocs.org) has also been used, by installing the `sphinx_rtd_theme` as a development dependency and modifying `docs/source/config.py` as follows:
 
 ```python
 import sphinx_rtd_theme
@@ -172,15 +171,35 @@ html_theme = "sphinx_rtd_theme"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 ```
 
-#### Creating a PDF Version Using LaTeX
+#### Creating HTML Version
 
-If a LaTex distribution is present on your system, then it is possible to create a PDF version of the documentation, as well. Start by building the prerequisite LaTex version from the ReStructured Text originals,
+From the repository directory:
 
 ```bash
-pipenv run sphinx-build -b latex docs/source docs/build_latex
+
+pipenv run sphinx-build -b html docs/ docs/_build/html
 ```
 
-Then, navigate to `docs/` and run,
+Alternatively, you can use the `make` utility located in the `docs` dir:
+```bash
+cd docs
+make html
+```
+
+The resulting HTML documentation can be accessed by opening `docs/_built/html/index.html` in a web browser.
+
+
+
+#### Creating a PDF Version Using LaTeX
+
+If a LaTex distribution is present on your system, it is possible to create a PDF version of the documentation as well. 
+From the repository directory:
+
+```bash
+pipenv run sphinx-build -b latexpdf  docs/ docs/_build/latex
+```
+
+Alternatively, navigate to `docs/` and run,
 
 ```bash
 make latexpdf
