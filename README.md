@@ -23,8 +23,8 @@ Furthermore, I relied on the advice given by the [Python Packaging Authority (Py
 ## Project Setup
 
 ### Prerequisites <a name="prereq"></a>
-- It is assumed that Python 3.9.x is 'globally' installed on your system and available on your Path.
-- It is assumed that git 2.x.x is installed on your system and available on the your Path.
+- It is assumed that Python 3.9.x is 'globally' installed on your system and available on your cmd search path.
+- It is assumed that git 2.x.x is installed on your system and available on your cmd search path.
 
 
 ### Installing pipenv globally
@@ -70,7 +70,7 @@ For use of an interactive python session, run the previous command with `ipython
 
 ### Pipenv Shells
 
-Prepending `pipenv` to every command you want to run within the context of your Pipenv-managed virtual environment is tedious. This can be avoided by entering into a Pipenv-managed shell.
+Prepending `pipenv` to every command you want to run within the context of your Pipenv-managed virtual environment is tedious. This can be avoided by entering a Pipenv-managed shell.
 
 ```bash
 pipenv shell
@@ -90,7 +90,7 @@ Pipenv will automatically pick-up and load any environment variables declared in
 PCK_ENV=prd
 ```
 
-Will enable access to this variable within any Python program, via a call to `os.environ['PCK_ENV']`. 
+will enable access to this variable within any Python program, via a call to `os.environ['PCK_ENV']`. 
 
 
 
@@ -116,7 +116,7 @@ This enables the declared entry point - `sample_pck.entry_points.main` -  to be 
 
 ### Running Unit Tests <a name="unit-testing"></a>
 
-All test have been written using the [PyTest](https://docs.pytest.org/en/latest/) package. Tests are kept in the `tests` folder and can be run from the command line by invoking,
+All tests have been written using the [PyTest](https://docs.pytest.org/en/latest/) package. Tests are kept in the `tests` folder and can be run from the command line by invoking,
 
 ```bash
 pipenv run pytest
@@ -127,7 +127,6 @@ The test suite is structured as an independent Python package as follows:
 ```bash
 tests/
  |-- test_data/
- |   |-- your-test-data.json
  |   __init__.py
  |   conftest.py
  |   test_animals.py
@@ -138,12 +137,12 @@ The `conftest.py` module is used by pytest to build testing-utilities used by se
 ### Automated Testing using Github workflows <a name="ci"></a>
 This package starter also defines a Continous Integration workflow that resides in the `.github/workflows/unit-tests.yml` directory.
 This workflow runs all unit-tests via `pytest` on each push to the master branch. 
-If you don't use Githubs CI Pipelines should delete the `.github` directory and its subdirectories. 
+If you don't use Githubs CI Pipelines, delete the `.github` directory and its subdirectories. 
 
 
 ### Linting Code <a name="code-linting"></a>
 
-[Flake8](http://flake8.pycqa.org/en/latest/) is used to enforce recommended code style guides. The precise linting rules can be configured in the `[flake8]` section of `setup.cfg`.
+[Flake8](http://flake8.pycqa.org/en/latest/) is used to enforce recommended code style guides. The precise linting rules are configured in the `[flake8]` section of `setup.cfg`.
 
 To start code linting, execute the following command:
 
@@ -164,7 +163,7 @@ pipenv run python -m mypy
 
 ### Code Documentation <a name="code docu">
 
-The documentation is located `docs` folder and has been built using [Sphinx](http://www.sphinx-doc.org). Sqhinx's default 'quickstart' was run in order to create the initial `conf.py`. It was customized concerning the docstring format and the documentation theme as explained below.
+The documentation is located `docs` folder and has been built using [Sphinx](http://www.sphinx-doc.org). Sqhinx's default 'quickstart' was run in order to create the initial `conf.py`. It was customized with respect to the docstring format and the documentation theme as explained below.
 
 
 #### Usage of Google-style docstrings
