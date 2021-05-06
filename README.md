@@ -161,13 +161,13 @@ pipenv run python -m mypy
 ```
 
 
-### Code Documentation <a name="code docu">
+### Code Documentation <a name="code-docu">
 
 The documentation is located `docs` folder and has been built using [Sphinx](http://www.sphinx-doc.org). Sqhinx's default 'quickstart' was run in order to create the initial `conf.py`. It was customized with respect to the docstring format and the documentation theme as explained below.
 
 
 #### Usage of Google-style docstrings
-To support Docstrings according to the [Google Styleguid](https://google.github.io/styleguide/pyguide.html), the `sphinx.ext.napoleon` shipped by Sphinx is used.
+To support Docstrings according to the [Google Styleguide](https://google.github.io/styleguide/pyguide.html), the `sphinx.ext.napoleon` shipped by Sphinx is used.
 
 
 #### Usage of Read the Docs Documentation Theme
